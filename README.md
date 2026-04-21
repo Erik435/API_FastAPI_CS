@@ -80,21 +80,23 @@ Accesos locales:
 
 ## Evidencia de funcionamiento local
 
-> Guardar capturas en `docs/screenshots/` para mantener orden del repositorio.
-
 <details open>
-<summary><strong>Capturas recomendadas</strong></summary>
+<summary><strong>Capturas</strong></summary>
 
 1. **Interfaz principal cargada localmente**
-   - `docs/screenshots/interfaz-local.png`
+   
+   ![Interfaz local](docs/screenshots/interfaz-local.png)
 
 2. **Caso de noticia falsa detectada**
-   - `docs/screenshots/caso-falso.png`
+   
+   ![Caso falso](docs/screenshots/caso-falso.png)
 
 3. **Caso de noticia real o con alta corroboración**
-   - `docs/screenshots/caso-real.png`
+   
+   ![Caso real](docs/screenshots/caso-real.png)
 
 4. **Swagger /docs funcionando**
-   - `docs/screenshots/swagger-local.png`
+   
+   ![Swagger local](docs/screenshots/swagger-local.png)
 
 </details>
