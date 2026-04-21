@@ -1,102 +1,146 @@
-# Detector de noticias falsas
+<div align="center">
 
-## Trabajo Académico — Grupo 3
-**Integrantes:** Erik Flores • Cristian González • Klever Barahona
+# 🛡️ Detector de noticias falsas
+**Trabajo Académico — Grupo 3**
+
+*Integrantes: Erik Flores • Cristian González • Klever Barahona*
+
+</div>
 
 ---
 
-API REST desarrollada con FastAPI para analizar contenido noticioso, contrastar evidencia externa y estimar el riesgo de desinformación con un resultado explicable para el usuario.
+> **📌 Descripción del proyecto**  
+> API REST desarrollada en FastAPI para analizar contenido noticioso y detectar señales de desinformación mediante evidencia externa y reglas heurísticas explicables.
 
-## Resumen del proyecto
+### 🎯 Enfoque de la solución
+- **Integración externa**: Google Fact Check Tools API para recuperar verificaciones publicadas.
+- **Procesamiento de datos**: análisis de título, contenido, enlace, fuente y autor.
+- **Motor heurístico**: cálculo de `risk_score`, `credibility_score` y veredicto final.
+- **Interfaz amigable**: vista web en tiempo real para análisis, historial y estadísticas.
 
-Este proyecto combina tres capas:
+---
 
-1. **Procesamiento de datos de entrada** (título, contenido, enlace, fuente, autor).
-2. **Contraste con fuentes externas** (Google Fact Check + resultados de noticias en línea).
-3. **Motor heurístico configurable** para calcular `risk_score`, `credibility_score` y veredicto.
+## 🧩 Repositorio del proyecto
 
-Además, incluye una interfaz web en HTML/CSS/JS para demostrar el análisis de forma visual y usable.
-
-<details>
-<summary><strong>Cómo está construido</strong></summary>
-
-- Backend en `FastAPI` con estructura modular (`routers`, `services`, `schemas`, `models`).
-- Persistencia en `SQLite` mediante `SQLAlchemy`.
-- Integración con API externa:
-  - Google Fact Check Tools API para obtener verificaciones publicadas.
-- Servicio de análisis en `app/services/analyzer.py`:
-  - normaliza entrada,
-  - compara evidencia externa,
-  - aplica reglas de scoring,
-  - devuelve veredicto y explicación.
-- Interfaz en `app/templates/index.html` + `app/static/styles.css`:
-  - formulario de análisis,
-  - visualización de veredicto, métricas, fuentes y fact-checks.
-
-</details>
-
-<details>
-<summary><strong>Contenido del repositorio</strong></summary>
-
+Este repositorio incluye:
 - Código fuente del API.
 - Configuración del modelo heurístico (`config/rules.yaml`).
 - `README.md` documentado.
 
+<details>
+<summary><strong>Ver estructura base</strong></summary>
+
+```text
+app/
+  main.py
+  database.py
+  models/
+  routers/
+  schemas/
+  services/
+  templates/
+  static/
+config/
+docs/screenshots/
+requirements.txt
+README.md
+```
+
 </details>
 
-## Ejecución local
+---
+
+## 🚀 Ejecución local
 
 <details open>
-<summary><strong>Pasos</strong></summary>
+<summary><b>1. Preparación del entorno</b></summary>
+<br>
 
-1. Crear entorno virtual:
-   - `python -m venv .venv`
-2. Activar entorno (PowerShell):
-   - `.\.venv\Scripts\Activate.ps1`
-3. Instalar dependencias:
-   - `pip install -r requirements.txt`
-4. Configurar API key externa:
-   - `$env:FACT_CHECK_API_KEY="tu_api_key_aqui"`
-5. Iniciar el servidor:
-   - `uvicorn app.main:app --reload`
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+$env:FACT_CHECK_API_KEY="tu_api_key_aqui"
+```
 
 </details>
 
-Accesos locales:
+<details open>
+<summary><b>2. Iniciar servidor</b></summary>
+<br>
 
-- Interfaz web: [http://127.0.0.1:8000](http://127.0.0.1:8000)
-- Documentación Swagger: [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
+```powershell
+uvicorn app.main:app --reload
+```
+
+</details>
+
+Accesos:
+- Interfaz: [http://127.0.0.1:8000](http://127.0.0.1:8000)
+- Swagger: [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
+
+---
+
+## 🔌 Endpoints disponibles
 
 <details>
-<summary><strong>Endpoints principales</strong></summary>
+<summary><b>1. 🟢 Estado del servicio (<code>GET /health</code>)</b></summary>
+<br>
 
-- `GET /health`
-- `POST /analyze`
-- `GET /history`
-- `GET /stats`
-- `GET /`
+```bash
+curl -X GET "http://127.0.0.1:8000/health"
+```
+
+</details>
+
+<details>
+<summary><b>2. 🧠 Análisis principal (<code>POST /analyze</code>)</b></summary>
+<br>
+
+```bash
+curl -X POST "http://127.0.0.1:8000/analyze" \
+  -H "Content-Type: application/json" \
+  -d "{\"title\":\"El 5G causa covid\",\"content\":\"...\"}"
+```
 
 </details>
 
-## Evidencia de funcionamiento local
+<details>
+<summary><b>3. 🗂️ Historial (<code>GET /history</code>)</b></summary>
+<br>
 
-<details open>
-<summary><strong>Capturas</strong></summary>
-
-1. **Interfaz principal cargada localmente**
-   
-   ![Interfaz local](docs/screenshots/interfaz-local.png)
-
-2. **Caso de noticia falsa detectada**
-   
-   ![Caso falso](docs/screenshots/caso-falso.png)
-
-3. **Caso de noticia real o con alta corroboración**
-   
-   ![Caso real](docs/screenshots/caso-real.png)
-
-4. **Swagger /docs funcionando**
-   
-   ![Swagger local](docs/screenshots/swagger-local.png)
+```bash
+curl -X GET "http://127.0.0.1:8000/history"
+```
 
 </details>
+
+<details>
+<summary><b>4. 📊 Estadísticas (<code>GET /stats</code>)</b></summary>
+<br>
+
+```bash
+curl -X GET "http://127.0.0.1:8000/stats"
+```
+
+</details>
+
+---
+
+<div align="center">
+
+## 📸 Evidencia del proyecto (local)
+
+</div>
+
+### 1️⃣ Interfaz principal cargada localmente
+![Interfaz local](docs/screenshots/interfaz-local.png)
+
+### 2️⃣ Caso de noticia falsa detectada
+![Caso falso](docs/screenshots/caso-falso.png)
+
+### 3️⃣ Caso de noticia real o con alta corroboración
+![Caso real](docs/screenshots/caso-real.png)
+
+### 4️⃣ Swagger `/docs` funcionando
+![Swagger local](docs/screenshots/swagger-local.png)
